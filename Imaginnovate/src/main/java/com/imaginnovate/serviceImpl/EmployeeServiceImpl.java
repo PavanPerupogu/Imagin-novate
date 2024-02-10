@@ -21,12 +21,10 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     public void storeEmployeeDetails(Employee employee) {
-        // Validate input data
         if (!isValidEmployee(employee)) {
             throw new IllegalArgumentException("Invalid employee data");
         }
 
-        // Store employee details
         employeeRepository.save(employee);
     }
 
@@ -36,7 +34,6 @@ public class EmployeeServiceImpl implements EmployeeService{
             throw new IllegalArgumentException("Employee not found");
         }
 
-        // Calculate tax deduction
         double yearlySalary = calculateYearlySalary(employee);
         double taxAmount = calculateTaxAmount(yearlySalary);
         double cessAmount = calculateCessAmount(yearlySalary);
@@ -46,7 +43,6 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     private boolean isValidEmployee(Employee employee) {
-        // Validate mandatory fields
         return employee.getEmployeeId() != null && !employee.getEmployeeId().isEmpty()
                 && employee.getFirstName() != null && !employee.getFirstName().isEmpty()
                 && employee.getLastName() != null && !employee.getLastName().isEmpty()
@@ -57,24 +53,17 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     private double calculateYearlySalary(Employee employee) {
-        // Calculate the total salary considering the DOJ
-        // This is a simplified calculation; adjust as per your requirements
         long monthsOfWork = calculateMonths(employee.getDoj(), new Date());
         double totalSalary = employee.getSalary() * monthsOfWork;
         return totalSalary;
     }
 
     private long calculateMonths(Date startDate, Date endDate) {
-        // Calculate the number of months between two dates
-        // This is a simplified calculation; adjust as per your requirements
-        // You might need a more precise calculation
         long diff = endDate.getTime() - startDate.getTime();
         return diff / (30 * 24 * 60 * 60 * 1000); // Assuming each month has 30 days
     }
 
     private double calculateTaxAmount(double yearlySalary) {
-        // Implement tax calculation logic based on provided tax slabs
-        // This is a simplified calculation; adjust as per your requirements
         double taxAmount = 0;
         if (yearlySalary > 1000000) {
             taxAmount = 0.2 * (yearlySalary - 1000000);
@@ -90,8 +79,6 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     private double calculateCessAmount(double yearlySalary) {
-        // Implement cess calculation logic
-        // This is a simplified calculation; adjust as per your requirements
         if (yearlySalary > 2500000) {
             return 0.02 * (yearlySalary - 2500000);
         }
